@@ -1,25 +1,14 @@
 import React, { Component } from 'react';
+import Box from './box';
 import './App.css';
 
 const NUM_BOXES = 16;
-
-const Box = ({color}) => {
-  const style = {
-    backgroundColor: color,
-    padding: '5px',
-    width: '10vw',
-    height: '10vw',
-    margin: '5px'
-  }
-
-  return <div style={style} />;
-}
 
 class App extends Component {
   
   render() {
     const boxes = this.shuffleBoxes().map((color, i) => (
-      <Box key={i} color={color} />
+      <Box key={i} id={i} color={color} />
     ));
     
     return (
