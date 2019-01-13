@@ -17,15 +17,16 @@ class Box extends React.Component {
         console.log('The box was clicked.');
         console.log(this.props.color, this.props.id);
         console.log(e);
+        
     }
 
     render(){
+        const {boxState, color, id, onClick} = this.props;
         return (
             <div className='box'
-                style={{ backgroundColor: this.props.isFlipped ? this.props.color : '#636e72'}}
-                onClick={this.handleClick}
-            >{this.props.id}
-            {this.props.cardState}
+                style={{ backgroundColor: boxState !== 0 ? color : '#636e72'}}
+                onClick={()=>onClick(id)}
+            >
             </div>
         )
     }
