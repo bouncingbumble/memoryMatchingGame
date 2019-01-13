@@ -24,7 +24,9 @@ class Box extends React.Component {
             <div className='box'
                 style={{ backgroundColor: this.props.isFlipped ? this.props.color : '#636e72'}}
                 onClick={this.handleClick}
-            >{this.props.id}</div>
+            >{this.props.id}
+            {this.props.cardState}
+            </div>
         )
     }
 }
