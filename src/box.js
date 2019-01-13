@@ -26,7 +26,8 @@ class Box extends React.Component {
 
 Box.propTypes = {
     showing: PropTypes.bool.isRequired,
-    color: PropTypes.string.isRequired
+    color: PropTypes.string.isRequired,
+    onClick: PropTypes.func.isRequired
 }
 
 export default Box;
