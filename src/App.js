@@ -68,7 +68,7 @@ class App extends Component {
 
   render() {
     const boxes = this.state.boxes.map((box, i) => (
-      <Box key={i} id={box.id} boxState={box.boxState} color={box.backgroundColor} onClick={this.onClick}/>
+      <Box key={i} id={box.id} showing={box.boxState !== 0 ? true : false} color={box.backgroundColor} onClick={this.onClick}/>
     ));
     
     return (
