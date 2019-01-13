@@ -47,35 +47,77 @@ class App extends Component {
   }
 
   onClick(id){
-    let boxes = this.state.boxes;
-    boxes.forEach(box => {
-      box.boxState = box.id === id ? BoxState.SHOWING : box.boxState;
-    })
+    // let boxes = this.state.boxes;
+    // boxes.forEach(box => {
+    //   box.boxState = box.id === id ? BoxState.SHOWING : box.boxState;
+    // })
 
-    let flippedBoxes = [];
+    // let flippedBoxes = [];
 
-    boxes.forEach(box => {
-      if(box.boxState === BoxState.SHOWING){
-        flippedBoxes.push(box);
-      }
-    })
+    // boxes.forEach(box => {
+    //   if(box.boxState === BoxState.SHOWING){
+    //     flippedBoxes.push(box);
+    //   }
+    // })
 
-    if(flippedBoxes.length > 1){
-      if(flippedBoxes[0].backgroundColor === flippedBoxes[1].backgroundColor){
-        boxes.forEach(box => {
-          box.boxState = box.id === flippedBoxes[0].id ? BoxState.MATCHING : box.boxState;
-          box.boxState = box.id === flippedBoxes[1].id ? BoxState.MATCHING : box.boxState;
-        })
-      }
-      else {
-        boxes.forEach(box => {
-          box.boxState = box.id === flippedBoxes[0].id ? BoxState.HIDING : box.boxState;
-          box.boxState = box.id === flippedBoxes[1].id ? BoxState.HIDING : box.boxState;
-        })
-      }
+    // if(flippedBoxes.length > 1){
+    //   if(flippedBoxes[0].backgroundColor === flippedBoxes[1].backgroundColor){
+    //     boxes.forEach(box => {
+    //       box.boxState = box.id === flippedBoxes[0].id ? BoxState.MATCHING : box.boxState;
+    //       box.boxState = box.id === flippedBoxes[1].id ? BoxState.MATCHING : box.boxState;
+    //     })
+    //   }
+    //   else {
+    //     boxes.forEach(box => {
+    //       box.boxState = box.id === flippedBoxes[0].id ? BoxState.HIDING : box.boxState;
+    //       box.boxState = box.id === flippedBoxes[1].id ? BoxState.HIDING : box.boxState;
+    //     })
+    //   }
+    // }
+
+    // this.setState({boxes});
+
+    const mapBoxState = (boxes, idsToChange, newBoxState) => {
+      return boxes.map(b => {
+        if(idsToChange.includes(b.id)) {
+          return {
+            ...b,
+            boxState: newBoxState
+          };
+        }
+        return b;
+      });
     }
 
-    this.setState({boxes});
+    const clickedBox = this.state.boxes.find(b => b.id === id);
+
+    if(this.state.noClick || clickedBox.boxState !== BoxState.HIDING){
+      return;
+    }
+
+    let noClick = false;
+
+    let boxes = mapBoxState(this.state.boxes, [id], BoxState.SHOWING)
+
+    const showingBoxes = boxes.filter((b) => b.boxState === BoxState.SHOWING)
+
+    const ids = showingBoxes.map(b => b.id);
+
+    if(showingBoxes.length === 2 && 
+    showingBoxes[0].backgroundColor === showingBoxes[1].backgroundColor){
+      boxes = mapBoxState(boxes, ids, BoxState.MATCHING);      
+    } else if(showingBoxes.length === 2) {
+      let hidingBoxes = mapBoxState(boxes, ids, BoxState.HIDING);
+      let noClick = true;
+      this.setState({boxes, noClick}, () => {
+        setTimeout(() => {
+          this.setState({boxes: hidingBoxes, noClick: false})
+        }, 1300);
+      });
+      return;
+    }
+
+    this.setState({boxes, noClick})
   }
 
   render() {
