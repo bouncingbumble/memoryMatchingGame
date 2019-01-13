@@ -77,46 +77,48 @@ class App extends Component {
 
     // this.setState({boxes});
 
+    //take in the boxes array, ids of the boxes that need their state changed,
+    //and the state the boxes need it changed to
     const mapBoxState = (boxes, idsToChange, newBoxState) => {
       return boxes.map(b => {
-        if(idsToChange.includes(b.id)) {
+        if(idsToChange.includes(b.id)) {//if we find one of the boxes we want to change...
           return {
-            ...b,
-            boxState: newBoxState
+            ...b,//destructure
+            boxState: newBoxState//set new state
           };
         }
         return b;
       });
     }
 
-    const clickedBox = this.state.boxes.find(b => b.id === id);
+    const clickedBox = this.state.boxes.find(b => b.id === id); //find the box object of the one clicked
 
-    if(this.state.noClick || clickedBox.boxState !== BoxState.HIDING){
+    if(this.state.noClick || clickedBox.boxState !== BoxState.HIDING){//if we shouldnt be able to click or an already clicked box is clicked
       return;
     }
 
-    let noClick = false;
+    let noClick = false; 
 
-    let boxes = mapBoxState(this.state.boxes, [id], BoxState.SHOWING)
+    let boxes = mapBoxState(this.state.boxes, [id], BoxState.SHOWING) //make the clicked box appear
 
-    const showingBoxes = boxes.filter((b) => b.boxState === BoxState.SHOWING)
+    const showingBoxes = boxes.filter((b) => b.boxState === BoxState.SHOWING) //fill array with showing boxes
 
-    const ids = showingBoxes.map(b => b.id);
+    const ids = showingBoxes.map(b => b.id); //get ids of showing boxes
 
     if(showingBoxes.length === 2 && 
-    showingBoxes[0].backgroundColor === showingBoxes[1].backgroundColor){
-      boxes = mapBoxState(boxes, ids, BoxState.MATCHING);      
-    } else if(showingBoxes.length === 2) {
-      let hidingBoxes = mapBoxState(boxes, ids, BoxState.HIDING);
+    showingBoxes[0].backgroundColor === showingBoxes[1].backgroundColor){//if there are two showing and the colors match
+      boxes = mapBoxState(boxes, ids, BoxState.MATCHING);      //set the state to matching
+    } else if(showingBoxes.length === 2) {//if two are flipped and unmatching
+      let hidingBoxes = mapBoxState(boxes, ids, BoxState.HIDING);//store hiding box set 
       let noClick = true;
       this.setState({boxes, noClick}, () => {
-        setTimeout(() => {
+        setTimeout(() => {//update with boxes hidden again after 1.3 seconds
           this.setState({boxes: hidingBoxes, noClick: false})
         }, 1300);
       });
       return;
     }
-
+    //if one box is clicked 
     this.setState({boxes, noClick})
   }
 
