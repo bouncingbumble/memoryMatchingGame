@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Box from './box';
+import Navbar from './Navbar';
 import './App.css';
 
 const NUM_BOXES = 16;
@@ -32,6 +33,17 @@ class App extends Component {
     ]
     this.state = {boxes: shuffleBoxes(boxes)}
     this.onClick = this.onClick.bind(this);
+    this.handleNewGame = this.handleNewGame.bind(this);
+  }
+
+  handleNewGame() {
+    let boxes = this.state.boxes.map(b => ({
+      ...b,
+      boxState: BoxState.HIDING
+    }));
+
+    boxes = shuffleBoxes(boxes)
+    this.setState({boxes});
   }
 
   onClick(id){
@@ -73,6 +85,7 @@ class App extends Component {
     
     return (
       <div>
+        <Navbar onNewGame={this.handleNewGame}></Navbar>
         <div className='gameboard'>
           {boxes}
         </div>

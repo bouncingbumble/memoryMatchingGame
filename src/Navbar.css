@@ -1,0 +1,15 @@
+.navbar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    height: 60px;
+    padding-left: 15px;
+    padding-right: 30px;
+    background-color: #6c5ce7;
+    margin-bottom: 40px;
+}
+
+li {
+    padding-top: 25px;
+    list-style-type: none;
+}
